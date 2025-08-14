@@ -1,0 +1,76 @@
+# Control Plane Components
+control_plane: Control Plane {
+  shape: rectangle
+  icon: https://cdn-icons-png.flaticon.com/512/1086/1086741.png
+  tooltip: "The Kubernetes control plane manages the cluster's desired state"
+  grid-columns: 6
+
+  api_server: API Server {
+    shape: image
+    icon: https://cdn-icons-png.flaticon.com/128/4180/4180439.png
+    tooltip: "Exposes the Kubernetes API - the front end of the control plane"
+  }
+
+  scheduler: Scheduler {
+    shape: image
+    icon: https://cdn-icons-png.flaticon.com/128/8324/8324489.png
+    tooltip: "Watches for newly created Pods and selects a node for them to run on"
+  }
+
+  controller_manager: Controller Manager {
+    shape: image
+    icon: https://cdn-icons-png.flaticon.com/128/808/808476.png
+    tooltip: "Runs controller processes that regulate cluster state"
+  }
+
+  etcd: etcd {
+    shape: image
+    icon: https://cdn-icons-png.flaticon.com/128/3539/3539630.png
+    tooltip: "Consistent and highly-available key-value store for all cluster data"
+  }
+
+  cloud_controller: Cloud Controller Manager {
+    shape: image
+    icon: https://cdn-icons-png.flaticon.com/128/8078/8078473.png
+    tooltip: "Links the cluster to cloud provider's API"
+  }
+}
+
+# Worker Node Components
+worker_node: Worker Node {
+  shape: rectangle
+  icon: https://cdn-icons-png.flaticon.com/128/9155/9155764.png
+  tooltip: "Worker machines that run containerized applications"
+  grid-columns: 4
+
+  kubelet: Kubelet {
+    shape: image
+    icon: https://cdn-icons-png.flaticon.com/128/11681/11681328.png
+    tooltip: "Agent that ensures containers are running in a Pod"
+  }
+
+  kube_proxy: Kube Proxy {
+    shape: image
+    icon: https://cdn-icons-png.flaticon.com/128/6762/6762631.png
+    tooltip: "Network proxy that maintains network rules"
+  }
+
+  container_runtime: Container Runtime {
+    shape: image
+    icon: https://cdn-icons-png.flaticon.com/512/919/919853.png
+    tooltip: "Software that runs containers (Docker, containerd, etc)"
+  }
+
+  pods: Pods {
+    shape: image
+    icon: https://cdn-icons-png.flaticon.com/128/7115/7115168.png
+    tooltip: "Smallest deployable units with one or more containers"
+  }
+}
+
+# Connections
+control_plane -> worker_node: Manages
+control_plane.api_server -> worker_node.kubelet: Commands
+control_plane.api_server -> worker_node.kube_proxy: Network Rules
+control_plane.scheduler -> worker_node.pods: Assigns
+control_plane.controller_manager -> worker_node.pods: Ensures Desired State
