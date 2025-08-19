@@ -8,11 +8,11 @@ In this lab you will generate a kubeconfig file for the `kubectl` command line u
 
 Each kubeconfig requires a Kubernetes API Server to connect to.
 
-You should be able to ping `server.kubernetes.local` based on the `/etc/hosts` DNS entry from a previous lab.
+You should be able to ping `cp.larstechnologies.home` based on the `/etc/hosts` DNS entry from a previous lab.
 
 ```bash
 curl --cacert ca.crt \
-  https://server.kubernetes.local:6443/version
+  https://cp.larstechnologies.home:6443/version
 ```
 
 ```text
@@ -33,20 +33,20 @@ Generate a kubeconfig file suitable for authenticating as the `admin` user:
 
 ```bash
 {
-  kubectl config set-cluster kubernetes-the-hard-way \
+  kubectl config set-cluster lt-home-cluster \
     --certificate-authority=ca.crt \
     --embed-certs=true \
-    --server=https://server.kubernetes.local:6443
+    --server=https://cp.larstechnologies.home:6443
 
   kubectl config set-credentials admin \
     --client-certificate=admin.crt \
     --client-key=admin.key
 
-  kubectl config set-context kubernetes-the-hard-way \
-    --cluster=kubernetes-the-hard-way \
+  kubectl config set-context lt-home-context \
+    --cluster=lt-home-cluster \
     --user=admin
 
-  kubectl config use-context kubernetes-the-hard-way
+  kubectl config use-context lt-home-context
 }
 ```
 The results of running the command above should create a kubeconfig file in the default location `~/.kube/config` used by the  `kubectl` commandline tool. This also means you can run the `kubectl` command without specifying a config.
