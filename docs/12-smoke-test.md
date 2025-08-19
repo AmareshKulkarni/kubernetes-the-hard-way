@@ -9,15 +9,15 @@ In this section you will verify the ability to [encrypt secret data at rest](htt
 Create a generic secret:
 
 ```bash
-kubectl create secret generic kubernetes-the-hard-way \
+kubectl create secret generic lt-home-secret \
   --from-literal="mykey=mydata"
 ```
 
-Print a hexdump of the `kubernetes-the-hard-way` secret stored in etcd:
+Print a hexdump of the `lt-home-secret` secret stored in etcd:
 
 ```bash
-ssh root@server \
-    'etcdctl get /registry/secrets/default/kubernetes-the-hard-way | hexdump -C'
+ssh root@cp \
+    'etcdctl get /registry/secrets/default/lt-home-secret | hexdump -C'
 ```
 
 ```text
@@ -84,12 +84,11 @@ POD_NAME=$(kubectl get pods -l app=nginx \
 Forward port `8080` on your local machine to port `80` of the `nginx` pod:
 
 ```bash
-kubectl port-forward $POD_NAME 8080:80
+kubectl port-forward $POD_NAME 9080:80 --address 0.0.0.0
 ```
 
 ```text
-Forwarding from 127.0.0.1:8080 -> 80
-Forwarding from [::1]:8080 -> 80
+Forwarding from 0.0.0.0:9080 -> 80
 ```
 
 In a new terminal make an HTTP request using the forwarding address:
