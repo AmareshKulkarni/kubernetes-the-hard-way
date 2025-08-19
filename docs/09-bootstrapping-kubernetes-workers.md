@@ -9,7 +9,7 @@ The commands in this section must be run from the `jumpbox`.
 Copy the Kubernetes binaries and systemd unit files to each worker instance:
 
 ```bash
-for HOST in node-0 node-1; do
+for HOST in node-1 node-2; do
   SUBNET=$(grep ${HOST} machines.txt | cut -d " " -f 4)
   sed "s|SUBNET|$SUBNET|g" \
     configs/10-bridge.conf > 10-bridge.conf
@@ -23,7 +23,7 @@ done
 ```
 
 ```bash
-for HOST in node-0 node-1; do
+for HOST in node-1 node-2; do
   scp \
     downloads/worker/* \
     downloads/client/kubectl \
@@ -38,17 +38,17 @@ done
 ```
 
 ```bash
-for HOST in node-0 node-1; do
+for HOST in node-1 node-2; do
   scp \
     downloads/cni-plugins/* \
     root@${HOST}:~/cni-plugins/
 done
 ```
 
-The commands in the next section must be run on each worker instance: `node-0`, `node-1`. Login to the worker instance using the `ssh` command. Example:
+The commands in the next section must be run on each worker instance: `node-1`, `node-2`. Login to the worker instance using the `ssh` command. Example:
 
 ```bash
-ssh root@node-0
+ssh root@node-1
 ```
 
 ## Provisioning a Kubernetes Worker Node
@@ -163,6 +163,9 @@ Create the `kubelet-config.yaml` configuration file:
   mv kube-proxy.service /etc/systemd/system/
 }
 ```
+### Delete drop-in override Kubelet config
+
+``` rm /usr/lib/systemd/system/kubelet.service.d/10-kubeadm.conf
 
 ### Start the Worker Services
 
@@ -184,7 +187,7 @@ systemctl is-active kubelet
 active
 ```
 
-Be sure to complete the steps in this section on each worker node, `node-0` and `node-1`, before moving on to the next section.
+Be sure to complete the steps in this section on each worker node, `node-1` and `node-2`, before moving on to the next section.
 
 ## Verification
 
@@ -193,7 +196,7 @@ Run the following commands from the `jumpbox` machine.
 List the registered Kubernetes nodes:
 
 ```bash
-ssh root@server \
+ssh root@cp \
   "kubectl get nodes \
   --kubeconfig admin.kubeconfig"
 ```
