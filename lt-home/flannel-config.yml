@@ -70,7 +70,7 @@ spec:
       - operator: "Exists"
       containers:
         - name: kube-flannel
-          image: quay.io/coreos/flannel:v0.25.0
+          image: quay.io/coreos/flannel:v0.15.1
           command:
             - /opt/bin/flanneld
             - --ip-masq
