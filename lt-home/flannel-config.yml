@@ -67,7 +67,7 @@ spec:
       serviceAccountName: flannel
       hostNetwork: true
       tolerations:
-      - operator: "Exists"
+        - operator: "Exists"
       containers:
         - name: kube-flannel
           image: quay.io/coreos/flannel:v0.15.1
@@ -85,7 +85,9 @@ spec:
                 fieldRef:
                   fieldPath: metadata.namespace
             - name: KUBE_FLANNEL_TLS_SKIP_VERIFY
-              value: "true"       # <-- Skip TLS verification for home lab
+              value: "true"
+            - name: FLANNEL_IFACE
+              value: "ens18"
           securityContext:
             privileged: true
           volumeMounts:
